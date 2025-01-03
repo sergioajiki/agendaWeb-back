@@ -1,5 +1,6 @@
 package com.project.agendaWeb.controller;
 
+import com.project.agendaWeb.dto.UserDto;
 import com.project.agendaWeb.entity.User;
 import com.project.agendaWeb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,17 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> cadastrarUsuario(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody UserDto userDto) {
         try {
-            User novoUsuario = userService.createUser(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
+            //Converte o Dto para entity
+            User userToSave = UserDto.toEntity(userDto);
+
+            //Salva user
+            User newUser = userService.createUser(userToSave);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 }
