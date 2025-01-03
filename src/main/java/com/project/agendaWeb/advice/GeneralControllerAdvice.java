@@ -1,6 +1,7 @@
 package com.project.agendaWeb.advice;
 
 import com.project.agendaWeb.dto.ErrorMessageDto;
+import com.project.agendaWeb.exception.BusinessRuleException;
 import com.project.agendaWeb.exception.DuplicateEntryException;
 import com.project.agendaWeb.exception.InvalidEmailFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,17 @@ public class GeneralControllerAdvice {
                 "Invalid Parameters",
                 "Invalid Request Body",
                 problemList
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleBusinessRuleExceptions(BusinessRuleException exception) {
+        Problem problem = new Problem(
+                HttpStatus.BAD_REQUEST.value(),
+                "Invalid business rule",
+                exception.getMessage(),
+                null
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
     }
