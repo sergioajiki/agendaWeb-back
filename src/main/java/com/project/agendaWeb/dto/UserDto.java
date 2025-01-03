@@ -9,12 +9,12 @@ public class UserDto {
     @Schema(description = "Nome completo do usuário", required = true)
     @NotBlank(message = "O nome é obrigatório.")
     private String name;
-    @Schema(description = "E-mail do usuário", required = true)
-    @NotBlank(message = "O e-mail é obrigatório.")
+    @Schema(description = "Email do usuário", required = true)
+    @NotBlank(message = "O email é obrigatório.")
     private String email;
-    @Schema(description = "Senha do usuário, no mínimo 6 caracteres", required = true)
+    @Schema(description = "Senha do usuário, entre 6 e 10 caracteres", required = true)
     @NotBlank(message = "A senha é obrigatória.")
-    @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres.")
+    @Size(min = 6, max = 10, message = "A senha deve ter entre 6 e 10 caracteres.")
     private String password;
 
     public String getName() {

@@ -1,6 +1,7 @@
 package com.project.agendaWeb.controller;
 
 import com.project.agendaWeb.dto.UserDto;
+import com.project.agendaWeb.dto.UserResponseDto;
 import com.project.agendaWeb.entity.User;
 import com.project.agendaWeb.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +28,7 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Cadastrar um novo usuário", description = "Cria um novo usuário no sistema")
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserDto userDto) {
         try {
             //Converte o Dto para entity
             User userToSave = UserDto.toEntity(userDto);
@@ -35,7 +36,10 @@ public class UserController {
             //Salva user
             User newUser = userService.createUser(userToSave);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+            //Converte a entidade para o DTO de resposta
+            UserResponseDto responseDto = UserResponseDto.userResponseDto(newUser);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

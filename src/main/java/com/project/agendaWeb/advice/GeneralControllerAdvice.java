@@ -1,13 +1,19 @@
 package com.project.agendaWeb.advice;
 
+import com.project.agendaWeb.dto.ErrorMessageDto;
 import com.project.agendaWeb.exception.DuplicateEntryException;
 import com.project.agendaWeb.exception.InvalidEmailFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ControllerAdvice
 public class GeneralControllerAdvice {
@@ -36,6 +42,27 @@ public class GeneralControllerAdvice {
                 "Invalid Email Format",
                 exception.getMessage(),
                 null
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Problem> handleNotFoundField(MethodArgumentNotValidException exception) {
+        List<ErrorMessageDto> problemList = new ArrayList<>();
+
+        exception.getBindingResult().getFieldErrors().forEach(e -> {
+            String detail = messageSource.getMessage(e, LocaleContextHolder.getLocale());
+            ErrorMessageDto messageDetail = new ErrorMessageDto(
+                    e.getField(),
+                    detail
+            );
+            problemList.add(messageDetail);
+        });
+        Problem problem = new Problem(
+                HttpStatus.BAD_REQUEST.value(),
+                "Invalid Parameters",
+                "Invalid Request Body",
+                problemList
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
     }
