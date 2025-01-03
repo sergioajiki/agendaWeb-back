@@ -1,27 +1,34 @@
 package com.project.agendaWeb.dto;
 
 import com.project.agendaWeb.entity.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-public class UserResponseDto {
-    private final Long id;
-    private final String name;
-    private final String email;
-
+public record UserResponseDto(
+        @Schema(description = "Número de identificação do usuário")
+        Long id,
+        @Schema(description = "Nome do usuário cadastrado")
+        String name,
+        @Schema(description = "Email do usuário cadastrado")
+        String email
+) {
     public UserResponseDto(Long id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
     }
 
-    public Long getId() {
+    @Override
+    public Long id() {
         return id;
     }
 
-    public String getName() {
+    @Override
+    public String name() {
         return name;
     }
 
-    public String getEmail() {
+    @Override
+    public String email() {
         return email;
     }
 
