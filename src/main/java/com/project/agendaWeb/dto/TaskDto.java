@@ -1,5 +1,6 @@
 package com.project.agendaWeb.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.agendaWeb.entity.Task;
 import com.project.agendaWeb.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,27 +9,33 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.Date;
-
 
 public class TaskDto {
     @Schema(description = "Título da tarefa")
     @NotBlank(message = "O título da tarefa é obrigatório.")
     private String title;
+
     @Schema(description = "Descrição da tarefa")
     private String description;
+
     @Schema(description = "Data de agendamento da tarefa")
     @NotNull(message = "A data de agendamento é obrigatória.")
     @FutureOrPresent(message = "A data de agendamento deve ser no presente ou no futuro.")
+    @JsonFormat(pattern = "yyyy-MM-dd") // Formato para a data de agendamento
     private LocalDate appointmentDate;
+
     @Schema(description = "Horário de início da tarefa")
     @NotNull(message = "O horário de início é obrigatório.")
+    @JsonFormat(pattern = "HH:mm") // Formato para o horário
     private LocalTime startTime;
+
     @Schema(description = "Horário de término da tarefa")
     @NotNull(message = "O horário de término é obrigatório.")
+    @JsonFormat(pattern = "HH:mm") // Formato para o horário
     private LocalTime endTime;
+
     @Schema(description = "ID do usuário responsável pela tarefa")
     @NotNull(message = "O ID do usuário responsável é obrigatório.")
     private Long userId;
@@ -81,22 +88,26 @@ public class TaskDto {
         this.userId = userId;
     }
 
-    public static Task toEntity(TaskDto taskDto, User user){
+    public static Task toEntity(TaskDto taskDto, User user) {
         Task task = new Task();
         task.setTitle(taskDto.getTitle());
         task.setDescription(taskDto.getDescription());
-        task.setAppointmentDate(convertToDate(taskDto.getAppointmentDate()));
-        task.setStartTime(convertToTime(taskDto.getStartTime()));
-        task.setEndTime(convertToTime(taskDto.getEndTime()));
-        task.setUpdateDate(new Date()); //Define a data de criação/atualização
+        task.setAppointmentDate(taskDto.getAppointmentDate());
+        task.setStartTime(taskDto.getStartTime());
+        task.setEndTime(taskDto.getEndTime());
+        task.setUpdateDate(LocalDateTime.now()); // Define a data de criação/atualização
+        task.setUserResponsible(user);
         return task;
     }
 
-    private static Date convertToDate(LocalDate localDate) {
-        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-    }
-
-    private static Date convertToTime(LocalTime localTime) {
-        return Date.from(localTime.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
+    public static TaskDto fromEntity(Task task) {
+        TaskDto taskDto = new TaskDto();
+        taskDto.setTitle(task.getTitle());
+        taskDto.setDescription(task.getDescription());
+        taskDto.setAppointmentDate(task.getAppointmentDate());
+        taskDto.setStartTime(task.getStartTime());
+        taskDto.setEndTime(task.getEndTime());
+        taskDto.setUserId(task.getUserResponsible().getId());
+        return taskDto;
     }
 }

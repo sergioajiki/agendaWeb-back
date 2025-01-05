@@ -3,6 +3,7 @@ package com.project.agendaWeb.service;
 import com.project.agendaWeb.entity.User;
 import com.project.agendaWeb.exception.DuplicateEntryException;
 import com.project.agendaWeb.exception.InvalidEmailFormatException;
+import com.project.agendaWeb.exception.NotFoundException;
 import com.project.agendaWeb.repository.UserRepository;
 import com.project.agendaWeb.util.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,11 @@ public class UserService {
         newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
 
         return userRepository.save(newUser);
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(
+                        "Usuário não encontrado com ID " + id));
     }
 }

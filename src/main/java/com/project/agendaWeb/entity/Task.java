@@ -1,7 +1,10 @@
 package com.project.agendaWeb.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 public class Task {
@@ -10,14 +13,15 @@ public class Task {
     private Long id;
     private String title;
     private String description;
-    @Temporal(TemporalType.DATE)
-    private Date appointmentDate;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updateDate;
-    @Temporal(TemporalType.TIME)
-    private Date startTime;
-    @Temporal(TemporalType.TIME)
-    private Date endTime;
+    @Column(name = "appointment_date", nullable = false)
+    private LocalDate appointmentDate; // Apenas data no formato yyyy-MM-dd
+
+    private LocalDateTime updateDate;
+    @Column(name = "start_time", nullable = false)
+    private LocalTime startTime; // Apenas horário (hh:mm)
+
+    @Column(name = "end_time", nullable = false)
+    private LocalTime endTime; // Apenas horário (hh:mm)
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -47,35 +51,35 @@ public class Task {
         this.description = description;
     }
 
-    public Date getAppointmentDate() {
+    public LocalDate getAppointmentDate() {
         return appointmentDate;
     }
 
-    public void setAppointmentDate(Date appointmentDate) {
+    public void setAppointmentDate(LocalDate appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 
-    public Date getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 
