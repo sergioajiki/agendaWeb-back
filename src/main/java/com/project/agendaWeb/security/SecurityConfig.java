@@ -13,11 +13,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) //Desabilitar CSRF
                 .headers(headers -> headers
-                        .frameOptions(frame -> frame.sameOrigin())/
+                        .frameOptions(frame -> frame.sameOrigin())
                 ) // Permitir iframes para o console H2
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll() // Permite acesso ao console H2 sem autenticação
-                        .anyRequest().permitAll() //// Permite todas as requisições sem autenticação
+                        .anyRequest().permitAll() // Permite todas as requisições sem autenticação
                 )
                 .logout(logout -> logout.disable()); //Desativa a funcionalidade de logout
         return http.build();

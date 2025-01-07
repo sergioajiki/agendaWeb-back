@@ -1,54 +1,68 @@
 package com.project.agendaWeb.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class LogUpdate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-    private String description;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataHora;
+    private Long id;
+    @Column(nullable = false)
+    private String action; // Ações: CREATE, UPDATE, DELETE
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String changedFields; // Campos e valores alterados
+    @Column(nullable = false)
+    private LocalDateTime updateDateTime; // Data e hora da atualização
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User updatedBy; // Usuário que fez a atualização
+
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
-    private Task task;
+    private Task task; // Tarefa associada à alteração
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAction() {
+        return action;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAction(String action) {
+        this.action = action;
     }
 
-    public Date getDataHora() {
-        return dataHora;
+    public String getChangedFields() {
+        return changedFields;
     }
 
-    public void setDataHora(Date dataHora) {
-        this.dataHora = dataHora;
+    public void setChangedFields(String changedFields) {
+        this.changedFields = changedFields;
     }
 
-    public User getUser() {
-        return user;
+    public LocalDateTime getUpdateDateTime() {
+        return updateDateTime;
     }
 
-    public void setUserEntity(User user) {
-        this.user = user;
+    public void setUpdateDateTime(LocalDateTime updateDateTime) {
+        this.updateDateTime = updateDateTime;
+    }
+
+    public User getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(User updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     public Task getTask() {
