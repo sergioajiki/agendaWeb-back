@@ -7,19 +7,21 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
+@Table(name = "tasks") // Nome explícito para a tabela
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, length = 150)
     private String title;
+    @Column(length = 500)
     private String description;
     @Column(name = "appointment_date", nullable = false)
     private LocalDate appointmentDate; // Apenas data no formato yyyy-MM-dd
-
+    @Column(name = "update_date")
     private LocalDateTime updateDate;
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime; // Apenas horário (hh:mm)
-
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime; // Apenas horário (hh:mm)
 
