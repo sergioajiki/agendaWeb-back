@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface LogUpdateRepository extends JpaRepository<LogUpdate, Long> {
     // Busca por tarefa
-    List<LogUpdate> findByTask(Task task);
+    List<LogUpdate> findByTask_Id(Task task);
     // Busca por intervalo de tempo
     List<LogUpdate> findByUpdateDateTimeBetween(LocalDateTime start, LocalDateTime end );
     // Busca por usuário
