@@ -1,6 +1,7 @@
 package com.project.agendaWeb.service;
 
 import com.project.agendaWeb.dto.TaskDto;
+import com.project.agendaWeb.entity.LogUpdate;
 import com.project.agendaWeb.entity.Task;
 import com.project.agendaWeb.entity.User;
 import com.project.agendaWeb.exception.BusinessRuleException;
@@ -124,4 +125,6 @@ public class TaskService {
             throw new BusinessRuleException("O intervalo de horário já está ocupado por outra tarefa.");
         }
     }
+
+
 }
