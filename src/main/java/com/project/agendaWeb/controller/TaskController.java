@@ -80,7 +80,6 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
-
     /**
      * Retorna uma tarefa pelo ID.
      *
