@@ -6,12 +6,14 @@ import com.project.agendaWeb.entity.Task;
 import com.project.agendaWeb.entity.User;
 import com.project.agendaWeb.exception.BusinessRuleException;
 import com.project.agendaWeb.exception.NotFoundException;
+import com.project.agendaWeb.repository.LogUpdateRepository;
 import com.project.agendaWeb.repository.TaskRepository;
 import com.project.agendaWeb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TaskService {
@@ -22,6 +24,8 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private LogUpdateRepository logUpdateRepository;
     /**
      * Grava uma nova tarefa no banco de dados, garantindo que o intervalo de horário não esteja ocupado.
      *
@@ -35,7 +39,12 @@ public class TaskService {
         Task task = TaskDto.toEntity(taskDto, user);
         validateTimeSlot(task, null); // Valida se o horário está disponível
         task.setUpdateDate(LocalDateTime.now());
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        // Registrar log de criação
+        registerLog("CREATE", null, savedTask, user);
+
+        return savedTask;
     }
 
     /**
@@ -126,5 +135,15 @@ public class TaskService {
         }
     }
 
+    private void registerLog(String action, Map<String, String> changes, Task task, User user) {
+        LogUpdate log = new LogUpdate();
+        log.setAction(action);
+        log.setChangedFields(changes != null ? changes.toString() : null);
+        log.setTask(task);
+        log.setUpdatedBy(user);
+        log.setUpdateDateTime(LocalDateTime.now());
+
+        logUpdateRepository.save(log);
+    }
 
 }
