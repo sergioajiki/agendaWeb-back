@@ -9,6 +9,7 @@ import com.project.agendaWeb.exception.NotFoundException;
 import com.project.agendaWeb.repository.LogUpdateRepository;
 import com.project.agendaWeb.repository.TaskRepository;
 import com.project.agendaWeb.repository.UserRepository;
+import com.project.agendaWeb.util.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,6 +111,9 @@ public class TaskService {
         // Validação de sobreposição de horários
         validateTimeSlot(updatedTask, id);
 
+        // Usa LogUtils para identificar mudanças
+        Map<String, String> changes = LogUtils.getChangeFields(existingTask, updatedTask);
+
         // Atualiza os dados da tarefa
         existingTask.setTitle(updatedTask.getTitle());
         existingTask.setDescription(updatedTask.getDescription());
@@ -118,6 +122,9 @@ public class TaskService {
         existingTask.setEndTime(updatedTask.getEndTime());
         existingTask.setUpdateDate(LocalDateTime.now());
         existingTask.setUserResponsible(updatedTask.getUserResponsible());
+
+        // Registra Log de atualização
+        registerLog("UPDATE", changes, existingTask.getId(), existingTask.getUserResponsible());
 
         return taskRepository.save(existingTask);
     }

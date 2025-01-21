@@ -20,7 +20,7 @@ public class LogUpdateService {
     }
 
     // Busca todos os Logs
-    public List<LogUpdate> getAllLogs(){
+    public List<LogUpdate> getAllLogs() {
         return logUpdateRepository.findAll();
     }
 
@@ -39,7 +39,7 @@ public class LogUpdateService {
         return logUpdateRepository.findByUpdatedBy(user);
     }
 
-    public void saveLog(LogUpdate logUpdate){
+    public void saveLog(LogUpdate logUpdate) {
         logUpdateRepository.save(logUpdate);
     }
 
