@@ -11,6 +11,7 @@ import com.project.agendaWeb.repository.TaskRepository;
 import com.project.agendaWeb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class TaskService {
 
     @Autowired
     private LogUpdateRepository logUpdateRepository;
+
     /**
      * Grava uma nova tarefa no banco de dados, garantindo que o intervalo de horário não esteja ocupado.
      *
@@ -42,7 +44,7 @@ public class TaskService {
         Task savedTask = taskRepository.save(task);
 
         // Registrar log de criação
-        registerLog("CREATE", null, savedTask, user);
+        registerLog("CREATE", null, savedTask.getId(), user);
 
         return savedTask;
     }
@@ -55,6 +57,10 @@ public class TaskService {
     public void deleteTask(Long id) {
         Task existingTask = taskRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Tarefa não encontrada com ID: " + id));
+
+        // Registra Log de exclusão
+        registerLog("DELETE", null, existingTask.getId(), existingTask.getUserResponsible());
+
         taskRepository.delete(existingTask);
     }
 
@@ -135,11 +141,11 @@ public class TaskService {
         }
     }
 
-    private void registerLog(String action, Map<String, String> changes, Task task, User user) {
+    private void registerLog(String action, Map<String, String> changes, Long taskId, User user) {
         LogUpdate log = new LogUpdate();
         log.setAction(action);
         log.setChangedFields(changes != null ? changes.toString() : null);
-        log.setTask(task);
+        log.setTaskId(taskId);
         log.setUpdatedBy(user);
         log.setUpdateDateTime(LocalDateTime.now());
 

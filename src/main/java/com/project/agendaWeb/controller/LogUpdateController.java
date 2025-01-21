@@ -31,9 +31,7 @@ public class LogUpdateController {
     @GetMapping("/task/{taskId}")
     @Operation(summary = "Lista os logs de uma tarefa")
     public List<LogUpdate> getLogsByTask(@PathVariable Long taskId) {
-        Task task = new Task();
-        task.setId(taskId);
-        return logUpdateService.getLogsByTask_Id(task);
+        return logUpdateService.getLogsByTaskId(taskId);
     }
 
     @GetMapping("/period")

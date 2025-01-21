@@ -7,7 +7,6 @@ import com.project.agendaWeb.repository.LogUpdateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,8 +25,8 @@ public class LogUpdateService {
     }
 
     // Busca os Logs por Tarefa
-    public List<LogUpdate> getLogsByTask_Id(Task task) {
-        return logUpdateRepository.findByTask_Id(task);
+    public List<LogUpdate> getLogsByTaskId(Long task) {
+        return logUpdateRepository.findByTaskId(task);
     }
 
     // Busca Logs por período

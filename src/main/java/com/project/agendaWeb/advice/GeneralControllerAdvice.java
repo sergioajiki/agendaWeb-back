@@ -4,6 +4,7 @@ import com.project.agendaWeb.dto.ErrorMessageDto;
 import com.project.agendaWeb.exception.BusinessRuleException;
 import com.project.agendaWeb.exception.DuplicateEntryException;
 import com.project.agendaWeb.exception.InvalidEmailFormatException;
+import com.project.agendaWeb.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.naming.NameNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,17 @@ public class GeneralControllerAdvice {
     @Autowired
     public GeneralControllerAdvice(MessageSource messageSource) {
         this.messageSource = messageSource;
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleNotFoundException(NotFoundException exception) {
+        Problem problem = new Problem(
+                HttpStatus.BAD_REQUEST.value(),
+                "Invalid Request Info",
+                exception.getLocalizedMessage(),
+                null
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
     }
 
     @ExceptionHandler

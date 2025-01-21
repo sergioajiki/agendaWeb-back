@@ -21,9 +21,10 @@ public class LogUpdate {
     @JoinColumn(name = "user_id", nullable = false)
     private User updatedBy; // Usuário que fez a atualização
 
-    @ManyToOne
-    @JoinColumn(name = "task_id", nullable = false)
-    private Task task; // Tarefa associada à alteração
+    //@ManyToOne
+    // ID da tarefa (sem vínculo de chave estrangeira, para manter as informações do log após a exclusão da tarefa)
+    @JoinColumn(name = "task_id", nullable = true)
+    private Long taskId; // Tarefa associada à alteração
 
     public Long getId() {
         return id;
@@ -65,11 +66,11 @@ public class LogUpdate {
         this.updatedBy = updatedBy;
     }
 
-    public Task getTask() {
-        return task;
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public void setTask(Task task) {
-        this.task = task;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 }
