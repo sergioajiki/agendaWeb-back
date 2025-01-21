@@ -1,5 +1,6 @@
 package com.project.agendaWeb.controller;
 
+import com.project.agendaWeb.dto.LogUpdateDto;
 import com.project.agendaWeb.entity.LogUpdate;
 import com.project.agendaWeb.entity.User;
 import com.project.agendaWeb.service.LogUpdateService;
@@ -23,7 +24,7 @@ public class LogUpdateController {
 
     @Operation(summary = "Lista todos os logs")
     @GetMapping
-    public List<LogUpdate> getAllLogs() {
+    public List<LogUpdateDto> getAllLogs() {
         return logUpdateService.getAllLogs();
     }
 

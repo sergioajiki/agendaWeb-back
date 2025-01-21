@@ -1,5 +1,6 @@
 package com.project.agendaWeb.service;
 
+import com.project.agendaWeb.dto.LogUpdateDto;
 import com.project.agendaWeb.entity.LogUpdate;
 import com.project.agendaWeb.entity.Task;
 import com.project.agendaWeb.entity.User;
@@ -20,8 +21,13 @@ public class LogUpdateService {
     }
 
     // Busca todos os Logs
-    public List<LogUpdate> getAllLogs() {
-        return logUpdateRepository.findAll();
+    public List<LogUpdateDto> getAllLogs() {
+
+        List<LogUpdate> logs = logUpdateRepository.findAll();
+
+        return logs.stream()
+                .map(LogUpdateDto::fromEntity)
+                .toList();
     }
 
     // Busca os Logs por Tarefa
