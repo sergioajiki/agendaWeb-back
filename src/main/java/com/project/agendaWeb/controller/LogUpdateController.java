@@ -1,7 +1,6 @@
 package com.project.agendaWeb.controller;
 
 import com.project.agendaWeb.entity.LogUpdate;
-import com.project.agendaWeb.entity.Task;
 import com.project.agendaWeb.entity.User;
 import com.project.agendaWeb.service.LogUpdateService;
 import io.swagger.v3.oas.annotations.Operation;

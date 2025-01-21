@@ -30,7 +30,6 @@ public class LogUtils {
                     changes.put(field.getName(), (oldValue == null ? "null" : oldValue.toString()) + " -> " +
                             (newValue == null ? "null" : newValue.toString()));
                 }
-
             } catch (IllegalAccessException e) {
                 throw new RuntimeException("Erro ao acessar o campo: " + field.getName(), e);
             }
