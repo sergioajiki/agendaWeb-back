@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @Tag(name = "Logs", description = "Logs de atualização das tarefas")
-@RequestMapping("/logs")
+@RequestMapping("/api/logs")
 public class LogUpdateController {
 
     private final LogUpdateService logUpdateService;

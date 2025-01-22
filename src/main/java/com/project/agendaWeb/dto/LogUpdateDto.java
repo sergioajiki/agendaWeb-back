@@ -2,16 +2,23 @@ package com.project.agendaWeb.dto;
 
 
 import com.project.agendaWeb.entity.LogUpdate;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
 
 
 public class LogUpdateDto {
+    @Schema(description = "Id do Log")
     private Long id;
+    @Schema(description = "Operação que modifica o tarefa")
     private String action;
+    @Schema(description = "Campo alterado")
     private String changedFields;
+    @Schema(description = "Data da alteração")
     private LocalDateTime updateDateTime;
+    @Schema(description = "Usuário responsável pela atualização")
     private UpdatedByDto updatedBy;
+    @Schema(description = "Id da tarefa")
     private Long taskId;
 
     public LogUpdateDto(
