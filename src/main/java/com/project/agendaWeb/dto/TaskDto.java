@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class TaskDto {
+
+    @Schema(description = "Id da tarefa")
+    private Long id;
+
     @Schema(description = "Título da tarefa")
     @NotBlank(message = "O título da tarefa é obrigatório.")
     private String title;
@@ -39,6 +43,10 @@ public class TaskDto {
     @Schema(description = "ID do usuário responsável pela tarefa")
     @NotNull(message = "O ID do usuário responsável é obrigatório.")
     private Long userId;
+
+    public Long getId() {return id;}
+
+    public void setId(Long id) {this.id = id;}
 
     public String getTitle() {
         return title;
@@ -102,6 +110,7 @@ public class TaskDto {
 
     public static TaskDto fromEntity(Task task) {
         TaskDto taskDto = new TaskDto();
+        taskDto.setId(task.getId());
         taskDto.setTitle(task.getTitle());
         taskDto.setDescription(task.getDescription());
         taskDto.setAppointmentDate(task.getAppointmentDate());
